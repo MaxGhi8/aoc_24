@@ -1,0 +1,5 @@
+lines = readlines("input.txt")
+lines = split.(lines,"   ")
+list1 = sort(parse.(Int, getindex.(lines, 1)))
+list2 = sort(parse.(Int, getindex.(lines, 2)))
+println(sum(abs.(list1 .- list2)))
