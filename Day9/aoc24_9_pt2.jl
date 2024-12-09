@@ -31,11 +31,19 @@ function compact_disk(blocks)
             if bl == block
                 break
             # switch condition
-            elseif bl[2] == '.' && bl[1] >= num_block
+            elseif bl[2] == '.' && bl[1] >= num_block && idx_block - idx == 1
                     blocks = cat([b for b in blocks[1:idx-1]], # unchanged first part of the list
                         [[0, '.']], # empty separator
                         [block], # moved block
-                        [ [blocks[idx][1]- num_block, '.']],
+                        [ [bl[1] + blocks[idx_block+1][1], '.'] ], # merged list with '.'
+                        [b for b in blocks[idx_block+2:end]], # unchanged last part of the list
+                        dims = 1)
+                break
+            elseif bl[2] == '.' && bl[1] >= num_block && idx < idx_block
+                    blocks = cat([b for b in blocks[1:idx-1]], # unchanged first part of the list
+                        [[0, '.']], # empty separator
+                        [block], # moved block
+                        [ [blocks[idx][1] - num_block, '.']],
                         [b for b in blocks[idx+1:idx_block-2]], # unchanged middle part of the list
                         [ [num_block + blocks[idx_block-1][1] + blocks[idx_block+1][1], '.'] ], # merged list with '.'
                         [b for b in blocks[idx_block+2:end]], # unchanged last part of the list
@@ -43,13 +51,14 @@ function compact_disk(blocks)
                 break
             end
         end
+
     end
     return blocks
 end
 
 function compute_checksum(compacted_blocks)
     i = 0
-    checksum = 0
+    checksum :: BigInt = 0
     for block in compacted_blocks
         counter = block[1]
         num = block[2]
