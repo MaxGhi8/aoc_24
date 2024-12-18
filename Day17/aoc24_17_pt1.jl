@@ -63,7 +63,7 @@ end
 # program = [0,1,5,4,3,0]  # The example program
 # regA = 729  # Initial value of register A
 program = [0,3,5,4,3,0]  # The example program
-regA = 117440# Initial value of register A
+regA = 117440 # Initial value of register A
 regB = 0    # Initial value of register B
 regC = 0    # Initial value of register C
 
